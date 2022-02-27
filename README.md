@@ -231,11 +231,21 @@ Now, we can **deploy Docker image using K8S**
                     
 &nbsp; &nbsp; &nbsp; &nbsp; **Difference between PODs and Deployments**
 
-&nbsp; &nbsp; **PODs** would get re-created as long as Deployment exists.
+**PODs** would get re-created as long as Deployment exists.
 
-&nbsp; &nbsp; However, **Deployments** would not get re-created once they are destroyed.
+However, **PODs** would not get re-created once **Deployment** is destroyed.
+
+<br />
+
+This is all about High Availability (**HA**)
+
+Let's proof this HA feature:
+
+   -  Let's delete the pod and see what happens
+
+            
                  
-                 
+          
                  
 
              
