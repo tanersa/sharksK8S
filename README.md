@@ -68,7 +68,34 @@ Lets check our environments created:
             kops create cluster --zones:us-east1a,us-east1b ${NAME} 
             
             In this case, NAME will be pulled from our env. variable "NAME"
-        
+  
+**Output:** We got an ERROR!
+
+   -  Let's check if kops is installed.
+
+            kops
+              installed
+              
+   -  Run the command again to create a cluster
+ 
+            kops update cluster --name sharksCluster-k8s-local --yes --admin
+            
+Go to EC2 machine on AWS, then you would see **One Master Node** Instance and **Two Worker Nodes** instances.
+
+Cluster still is **not created...**
+
+We may verify cluster with below command:
+            kops validate cluster
+            
+Still  we get **ERROR** message. 
+
+Lets do 
+
+
+
+
+              
+   
 
 
 
