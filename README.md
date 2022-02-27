@@ -228,20 +228,44 @@ Now, we can **deploy Docker image using K8S**
                  kubectl apply -f image-deploy.yaml
                  kubectl get po -w
                     (There will be 4 PODs)
-                    
+
+<br />
+
 &nbsp; &nbsp; &nbsp; &nbsp; **Difference between PODs and Deployments**
 
 **PODs** would get re-created as long as Deployment exists.
 
-However, **PODs** would not get re-created once **Deployment** is destroyed.
+Once, **Deployment** is deleted, you would delete all PODs.
 
 <br />
 
-This is all about High Availability (**HA**)
+**This is all about High Availability (HA)**
 
-Let's proof this HA feature:
+Let's proof this **self-healing** feature of K8S:
 
    -  Let's delete the pod and see what happens
+
+               kubectl delete pod <POD Name>
+                      (POD is deleted)
+                      
+               kubectl get po
+                       (There are still 4 PODs, so it created one more POD after deletion)
+                       
+   -  Now, let's delete the deployment now
+
+               kubectl delete deploy <Deployment Name> 
+                      (Nothing exists)
+               
+               kubectl get po
+                       (It is terminating all the PODs)
+                       
+                       
+                      
+                      
+          
+                       
+                       
+                      
 
             
                  
