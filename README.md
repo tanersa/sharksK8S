@@ -143,9 +143,64 @@ Let's create our **cluster-config.yaml** file
                 desiredCapacity: 2
                 ssh:
                   publicKeyName: eks
+                        
+   -  Create the cluster using CLI
+   
+            eksctl create cluster -f cluster-config.yaml
             
-            
-            
+This config file will pull CloudFormation Template **(CFT)** in background and will **create EKS Cluster.**
+
+<br />
+
+For **AWS EKS,**
+
+Master Node   ----->   **Control Plane**
+
+Worker Node   ----->   **Node Group**
+
+   -  To see the nodes created for EKS
+
+             kubectl get nodes
+                 (2 nodes are created)
+                 (One for Control Plane and the other for Node Group)
+                 
+   -  Nodes get all configuration from Control Plane.
+   -  To see all node groups:
+
+              eksctl get nodegroup --cluster=Sharks-EKS-cluster
+             
+   -  We do not see Control Plane instance on AWS Console because it's managed by AWS. We only see Worker Node instance.
+  
+Now, we can **deploy Docker image using K8S**
+
+   -  Create a new manifest yaml file called **image-deploy.yaml** to deploy an image.
+   
+               apiVersion: apps/v1
+               kind: Deployment 
+               metadata:
+                 name: tomcat-deployment
+               spec:
+                 selector:
+                   matchLabels:
+                     app: tomcat-deployment
+                 replicas: 2
+
+                 template:
+                   metadata:
+                     labels:
+                       app: tomcat-deployment
+                   spec:
+                     containers:
+                     - name: tomcat-deployment-container
+                       image: sharksdocker/simple-devops-image
+                       imagePullPolicy: Always 
+                       ports:
+                       - containerPort: 8080               
+                 
+                 
+             
+             
+             
             
             
             
