@@ -210,6 +210,35 @@ Now, we can **deploy Docker image using K8S**
 **Note:** 
 **POD** is the smallest unit in Kubernetes. Pods are placed in **Nodes** and containers are placed in **PODs.**
 
+   - In order to see PODs in our EKS cluster...
+
+               kubectl get pods   OR    kubectl get po
+               
+   -  If you do not specify "Replica" in your "Deployment" file, there will only be one POD created. Therefore, there would
+      be only one container and one pod created.
+      
+   -  All PODs would have deployment name plus random string so they can be differentiated from each other.  
+
+               Example: tomcat-deployment-f6d272f83363bn8
+               
+   -  Lets increase the replica to 4 then we would see 4 PODs.
+
+   -  Deploy yaml file again
+
+                 kubectl apply -f image-deploy.yaml
+                 kubectl get po -w
+                    (There will be 4 PODs)
+                    
+&nbsp; &nbsp; &nbsp; &nbsp; **Difference between PODs and Deployments**
+
+&nbsp; &nbsp; **PODs** would get re-created as long as Deployment exists.
+
+&nbsp; &nbsp; However, **Deployments** would not get re-created once they are destroyed.
+                 
+                 
+                 
+
+             
 
                           
                
