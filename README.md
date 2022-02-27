@@ -51,13 +51,23 @@ This time we create an IAM Role for our cluster.
    -  Choose K8S role and SAVE
    -  We just added K8S role to our EC2 instance so we can do actions that we have as permissions.
    -  We also need to store all K8S Configuration in S3 bucket. That is the reason we created IAM Role with S3 bucket permissions.
-   -  You may create your S3 bucket using cli or AWS Console.
+   -  You may create your S3 bucket using CLI or AWS Console.
    -  During the creation of your S3 bucket, you may enable the "Versioning" for your S3 bucket under Properies to prevent accidental deletion.
    -  We need to store K8S configuration files in S3 bucket.
    -  Encryption would also be enabled for your bucket to increase security.
    
 Ideally, we would like to deploy **worker nodes** to different Availability Zones **(AZs)** in order to achieve High Availability **(HA)**.
 
+Lets check our environments created:
+
+   -  export NAME
+   -  export KOPS_STATE_STORE
+
+   -  Then, we can create our first cluster with CLI.
+   
+            kops create cluster --zones:us-east1a,us-east1b ${NAME} 
+            
+            In this case, NAME will be pulled from our env. variable "NAME"
         
 
 
