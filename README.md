@@ -14,12 +14,6 @@ K8S is designed by Google and now managed by **Cloud Native Computing**(CNC). K8
 
 <br />
 
-
-
-
-
-<br />
-
 **Let's create our first K8S Cluster:**
 
 **Pre-requisite** for K8S Cluster:
@@ -197,7 +191,30 @@ Now, we can **deploy Docker image using K8S**
                        ports:
                        - containerPort: 8080               
                  
-                 
+   -  We added this manifest yaml file for eksctl user
+   -  Deploy your yaml file for image deployment
+
+               kubectl apply -f image-deploy.yaml
+                     (Deployment is created)
+                     
+   -  To see all deployments, you may run one of below CLIs:
+
+               -kubectl get deploy
+               -kubectl get deployment
+               -kubectl get deployments
+               
+   -  To watch deployments live
+ 
+               -kubectl get deployments -w
+               
+**Note:** 
+**POD** is the smallest unit in Kubernetes. Pods are placed in **Nodes** and containers are placed in **PODs.**
+
+
+                          
+               
+               
+               
              
              
              
