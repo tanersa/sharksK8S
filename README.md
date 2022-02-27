@@ -85,11 +85,83 @@ Go to EC2 machine on AWS, then you would see **One Master Node** Instance and **
 Cluster still is **not created...**
 
 We may verify cluster with below command:
+
             kops validate cluster
             
 Still  we get **ERROR** message. 
 
-Lets do 
+**Lets change our solution using different approach...**
+
+<br />
+
+**AWS Elastic Kubernetes Service (EKS)**
+
+This time we will leverage EKS for creating a cluster.
+
+To start, we will follow the below steps:
+
+   -  In order to leverage EKS cluster, we need to install eksctl utility.
+   -  Go to root directory on your instance and check if a user created to leverage.
+
+            aws sts get-caller-identity
+                  (Unable to locate credentials)
+                  
+   -  To create credentials for the user
+
+            aws configure
+                  (gather your Access Key and Secret Key from .csv file for your user and paste to 
+                  necessary fields )
+                  
+  Again in order to create resources on behalf of **eksctl**, we  need to create **user** or **user role**
+  
+  <br />
+
+**All AWS services are integrated to each other with "Permissions"**
+  
+   -  User must have permissions to talk to different AWS services.
+   -  Let's create role for EKS on AWS Console. 
+   -  Choose EKS use case
+   -  Skip Permissions
+   -  Install eksctl on your instance
+   -  Install kubectl (to talk to Kubernetes cluster)
+   -  Make kubectl executable:
+
+            chmod +x ./kubectl
+            
+Let's create our **cluster-config.yaml** file 
+
+            apiVersion: eksctl.io/v1alpha5
+            kind: ClusterConfig
+
+            metadata:
+              name: Sharks-EKS-cluster
+              region: us-east-2
+
+            nodeGroups:
+              - name: Sharks-ng
+                instanceType: t2.small
+                desiredCapacity: 2
+                ssh:
+                  publicKeyName: eks
+            
+            
+            
+            
+            
+            
+            
+  
+
+                            
+                  
+                  
+            
+            
+
+
+
+
+      
 
 
 
