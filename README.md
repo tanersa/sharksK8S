@@ -258,7 +258,156 @@ Let's proof this **self-healing** feature of K8S:
                
                kubectl get po
                        (It is terminating all the PODs)
+     
+   -  For testing purposes, we can delete and create PODs over and over and complete our tests in DEV. However, we do not want to delete PODs 
+      in PROD. 
+      
+   -  To see what is inside the POD:
+
+               kubectl exec -it <POD Name> /bin/bash
+               (Now we are inside the POD)
+               
+It doesn't matter which POD you access because all PODs are **pulling same image**. However, each pod is **not identical**.            
+               
+   -  Now, lets go to other VM for docker and go to webapps direct.
+
+               cd webapps/
+               cat index.jsp
+                   <h1> Hello, Welcome to K8S </h1>
+                   
+   -  Go back to ansible instance 
+
+               cd index.jsp
+               cat index.jsp
+                   (We can see the file)
+                   
+   -  Below CLI will give you **IP Adresses** with **PODs** and **instances**.
+
+               kubectl get nodes -o wide
+               
+We deployed everything in Ohio region but our instances are in Northern Virginia region.
+
+&nbsp; &nbsp; We have **two worker nodes** in Ohio region. We want to make sure whenever we deploy everything, all should get deployed to 
+**different PODs** and and **different worker nodes**.
+
+Let's say if one of worker nodes goes down, other worker node will be up and running.
+
+We put...
+
+       Desired Capacity: 2
+
+       Minimum Capacity: 2
+       
+       Maximum Capacity: 2
+       
+&nbsp; &nbsp; If one of instances goes down, of course **Auto Scaling Group** will create another instance, but control plane and 
+worker node creation will take time. During this time, this worker node will also be in traffic because we want to have zero down time.
+
+&nbsp; &nbsp; Now, we created our **Deployment** and we would like to serrve our traffic to public. That's why we will create another yaml file.
+
+               service-image.yaml
+               
+               apiVersion: v1
+               kind: Service 
+               metadata:
+                 name: tomcat-service
+                 labels:
+                   app: tomcat-deployment
+                 spec:
+                   selector:
+                     app: tomcat-deployment
+                   type: LoadBalancer
+                   ports:
+                   - port: 8080
+                     targetPort: 8080
+                     nodePort: 31200
+                     
+**Note:** Target port is always container port.
+
+   -  To deploy service:
+
+               kubectl apply -f service-image.yaml
+
+   -  To see services run one of CLIs:
+
+               kubectl get services    
+               kubectl get service
+               kubectl get svc
+               
+   -  Go to AWS Console > Load Balancer  
+
+               We should be able to see Load Balancers.
+               
+   -  Copy DNS Name and paste it to your browser.
+
+               You should be able to see application (In this case TomCat Application)
+               
+<br />
+
+**Let's say we want this application always up and running.**
+
+   -  To see all deployments and services
+
+               kubectl get all 
+                       ( We see everything service and deployment )
                        
+**Deployments** create Replicas in backend which are the **PODs** on the screen.    
+
+   -  Let's verify if application will be up and running all the time.
+
+               kubectl get pods
+                  (Two pods running)
+                  
+   -  Delete the pods
+
+               kubectl delete pod <POD1>   
+               kubectl delete pod <POD2> 
+               
+   -  Copy DNS Name and port 8080 on browser and refresh the page    
+
+               You can see application is still up and running
+               And pods are recreated again.
+               
+**That's the Beauty of Kubernetes**!!!
+
+   -  To get very detail output:
+
+               kubectl describe pod <POD Name>     
+               kubectl logs <POD Name>  
+               
+                     You will see the EVENTS in output which is the most important section for debugging.
+                     
+<br />
+
+**NOTES:**
+
+Containers are inside the PODS and they get networking and everything from PODs.
+                     
+By default, K8S and containers are Stateless (there is no persistent volume attached).
+
+Containers get those volumes from PODs.
+
+K8S cluster tree for an application goes as follows...
+
+               K8S Cluster > Worker Node > Deployment > POD > Container > Application
+
+
+                 
+
+
+               
+
+       
+       
+       
+               
+               
+                                 
+                  
+               
+               
+
+
                        
                       
                       
