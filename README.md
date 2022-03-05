@@ -379,6 +379,7 @@ worker node creation will take time. During this time, this worker node will als
                      
 <br />
 
+
 **NOTES:**
 
 Containers are inside the PODS and they get networking and everything from PODs.
