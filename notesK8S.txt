@@ -1,5 +1,6 @@
 12/11/2021  Kubernetes (EKS)
 
+
 1) aws configure 
 2) create EKS role in AWS Console 
 3) Install eksctl 
